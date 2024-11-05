@@ -1,0 +1,48 @@
+def calculate_hamming_distance(binary_string, rearranged_string):
+    # Calculate Hamming distance
+    return sum(1 for a, b in zip(binary_string, rearranged_string) if a != b)
+
+def process_test_case(binary_string, A, B):
+    # Check if the binary string is valid
+    if not all(c in '01' for c in binary_string):
+        return "INVALID"
+    
+    # Count the number of '0's and '1's
+    count_0 = binary_string.count('0')
+    count_1 = binary_string.count('1')
+    
+    # If the string consists entirely of 0's or entirely of 1's, no rearrangement is needed
+    if count_0 == 0 or count_1 == 0:
+        return 0  # Hamming distance is 0 because no change is needed
+
+    # Calculate the minimum cost when arranged as "000...111"
+    min_cost = (count_1 * B)  # Cost of "10" transitions, "01" is 0 in this arrangement
+    
+    # Calculate Hamming distance: rearranged = "000...111"
+    rearranged_string = '0' * count_0 + '1' * count_1
+    hamming_distance = calculate_hamming_distance(binary_string, rearranged_string)
+    
+    return hamming_distance
+
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().strip().splitlines()
+    
+    T = int(data[0])
+    results = []
+    
+    line_index = 1
+    for _ in range(T):
+        binary_string = data[line_index].strip()
+        A, B = map(int, data[line_index + 1].strip().split())
+        line_index += 2
+        
+        hamming_distance = process_test_case(binary_string, A, B)
+        results.append(hamming_distance)
+    
+    for result in results:
+        print(result)
+
+if __name__ == "__main__":
+    main()
